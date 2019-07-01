@@ -5,6 +5,12 @@ just a web hello world using Go lang ;)
 [open and try http://3.16.29.205/](http://3.16.29.205/)
 
 ## Deploy locally
+### Clone the repository and cd into it:
+```
+git clone https://github.com/th3happybit/GoHelloToWeb/
+cd GoHelloToWeb
+```
+
 ### compile
 ```
 $ go build index.go
