@@ -25,14 +25,22 @@ func loadPage(title string) (*Page, error) {
     }
     return &Page{Title: title, Body: body}, nil
 }
-//render html pages
+//render html pages and handles errors
 func renderTemplate(w http.ResponseWriter, tmpl string, p *Page) {
-    t, _ := template.ParseFiles(tmpl + ".html")
-    t.Execute(w, p)
+    t, err := template.ParseFiles(tmpl + ".html")
+    
+    if err != nil {
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+        return
+    }
+    err = t.Execute(w, p)
+    if err != nil {
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+    }
 }
 //view html pages
 func viewHandler(w http.ResponseWriter, r *http.Request) {
-    title := r.URL.Path[len("/view/"):]
+    title := r.URL.Path[len("/"):]
     p, err := loadPage(title)
     if err != nil {
         http.Redirect(w, r, "/edit/"+title, http.StatusFound)
@@ -49,12 +57,16 @@ func editHandler(w http.ResponseWriter, r *http.Request) {
     }
     renderTemplate(w, "edit", p)
 }
-//edit saving handler
+//edit saving and errors handler
 func saveHandler(w http.ResponseWriter, r *http.Request) {
     title := r.URL.Path[len("/save/"):]
     body := r.FormValue("body")
     p := &Page{Title: title, Body: []byte(body)}
-    p.save()
+    err := p.save()
+    if err != nil {
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+        return
+    }
     http.Redirect(w, r, "/"+title, http.StatusFound)
 }
 //main function
