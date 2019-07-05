@@ -1,10 +1,10 @@
-FROM golang:onbuild
+FROM golang:alpine
 
-RUN mkdir /app
-ADD . /app
+WORKDIR /go/src/GoHelloToWeb
+COPY . .
 
-WORKDIR /app
- 
+RUN go build -v
+
 EXPOSE 8080
 
-CMD ["./index"]
+CMD ["./GoHelloToWeb"]
