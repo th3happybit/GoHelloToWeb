@@ -21,6 +21,11 @@ $ go build index.go
 $ ./index
 ```
 
+## Deploy using docker-compose
+```
+$ docker-compose up
+```
+
 ## Deploy Using Docker
 
 ### build image

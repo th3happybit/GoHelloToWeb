@@ -1,0 +1,8 @@
+version: '3.7'
+
+services:
+  app:
+    image: gohellotoweb
+    build: .
+    ports:
+      - "80:8080"
